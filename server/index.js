@@ -93,8 +93,8 @@ app.post('/changepassword', (req, res) => {
 
 //Add product
 app.post('/addproduct',(req, res) => {
-    const { name,  price, release_date, video_link, description, publisher_name, developer_name, category_name, image_link} = req.body;
-    db.query('INSERT INTO Product (name,  price, release_date, video_link, description, publisher_name, developer_name, category_name) VALUES (?,?,?,?,?,?,?,?)', [name,  price, release_date, video_link, description], (err, result) => {
+    const { name,  price, release_date, video_link, description, publisher_name, developer_name, category_name, image_link1, image_link2, image_link3, image_link4, image_link5} = req.body;
+    db.query('INSERT INTO Product (name,  price, release_date, video_link, description, publisher_name, developer_name, category_name, image_link1, image_link2, image_link3, image_link4, image_link5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [name,  price, release_date, video_link, description, publisher_name, developer_name, category_name, image_link1, image_link2, image_link3, image_link4, image_link5], (err, result) => {
         if (err) {
             console.log(err);
             res.send("Internal Server Error");
@@ -103,25 +103,7 @@ app.post('/addproduct',(req, res) => {
         console.log(result);
         res.send("Product added successfully");
     });
-    db.query('SELECT MAX(id) AS latest_id FROM product', (err, result) => {
-        if (err) {
-            console.error('Error executing the query: ' + err.stack);
-            return;
-        }
-        //add image
-        const product_id = result[0].latest_id;
-        for (let i = 0; i < image_link.length; i++){
-            db.query('INSERT INTO Image (product_id,image_link) VALUES (?,?)', [product_id,image_link[i]], (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.send("Internal Server Error");
-                    return;
-                }
-                console.log(result);
-                res.send("Image added successfully");
-            })
-        }
-    })
+    
     //add publisher, developer, category
     db.query('INSERT INTO Publisher (name) VALUES (?)', [publisher_name], (err, result) => {
         if (err) {
